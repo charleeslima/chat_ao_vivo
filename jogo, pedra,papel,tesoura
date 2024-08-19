@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedra, Papel ou Tesoura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .game-container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .result-box {
+            background: #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Pedra, Papel ou Tesoura</h1>
+        <p>Escolha uma opção abaixo e veja se você ganha do computador!</p>
+        <form id="game-form">
+            <label>
+                <input type="radio" name="choice" value="pedra" required> Pedra
+            </label>
+            <label>
+                <input type="radio" name="choice" value="papel" required> Papel
+            </label>
+            <label>
+                <input type="radio" name="choice" value="tesoura" required> Tesoura
+            </label>
+            <button type="submit">Jogar</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function getComputerChoice() {
+            const choices = ['pedra', 'papel', 'tesoura'];
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        function determineWinner(userChoice, computerChoice) {
+            if (userChoice === computerChoice) {
+                return 'Empate!';
+            } else if ((userChoice === 'pedra' && computerChoice === 'tesoura') ||
+                       (userChoice === 'papel' && computerChoice === 'pedra') ||
+                       (userChoice === 'tesoura' && computerChoice === 'papel')) {
+                return 'Você ganhou!';
+            } else {
+                return 'Você perdeu!';
+            }
+        }
+
+        document.getElementById('game-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userChoice = document.querySelector('input[name="choice"]:checked').value;
+            const computerChoice = getComputerChoice();
+            const result = determineWinner(userChoice, computerChoice);
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <div class="result-box">
+                    <p>Você escolheu: <strong>${userChoice}</strong></p>
+                    <p>O computador escolheu: <strong>${computerChoice}</strong></p>
+                    <p>Resultado: <strong>${result}</strong></p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
